@@ -3,14 +3,14 @@
 ###############################################################################
 
 CC = mpicc
-CFLAGS = -std=c99 -g -O3
+CFLAGS = -std=c99 -g -O2
 LIBS = -lm
 
 BIN = sum
 
 all: $(BIN)
 
-sum: sum.c
+sum: scatterSum.c
 	$(CC) $(CFLAGS) -o $@ $< $(LIBS)
 	
 clean:

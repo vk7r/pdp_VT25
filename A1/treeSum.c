@@ -1,10 +1,19 @@
 #include "mpi.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
-#define ARRAY_SIZE 9
+// #define ARRAY_SIZE 4194304
 
-int array[ARRAY_SIZE] = {2, 3, 4, 5, 6, 7, 8, 9, 10};
+/*
+static double get_wall_seconds()
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    double seconds = tv.tv_sec + (double)tv.tv_usec / 1000000;
+    return seconds;
+}
+    */
 
 int main(int argc, char **argv)
 {
@@ -12,35 +21,72 @@ int main(int argc, char **argv)
     int sum = 0;
     int received;
     int num;
+    double startTime;
+
+    if (argc != 2)
+    {
+        printf("Usage: %s <array_size>\n", argv[0]);
+        return 1;
+    }
+    int ARRAY_SIZE = atoi(argv[1]);
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     // printf("Size is %d\n", size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    // int num = rank; //+ rand() % 100;
-    int sizeOfArray = sizeof(array) / sizeof(array[0]);
-    int block = sizeOfArray / size;
-    int start = rank * block;
-    int end = (sizeOfArray % size != 0 && rank == (size - 1)) ? (start + block + (sizeOfArray % size) - 1) : start + block - 1;
-    printf("Rank %d starts with %d and ends with %d\n", rank, start, end);
+    int start, end;
 
-    for (int j = start; j <= end; j++)
+    if (rank == 0)
     {
-        sum += array[j];
-    }
-    // alternative way to hand out the array
-    /*  for (int i = 0; i < sizeOfArray; i++)
+        int *array = (int *)malloc(ARRAY_SIZE * sizeof(int));
+        srand(42);
+        for (int i = 0; i < ARRAY_SIZE; i++)
         {
-            if (i % size == rank)
+            // array[i] = 1;
+            array[i] = rand() % 100;
+        }
+        int block = ARRAY_SIZE / size;
+        for (int i = 0; i < size; i++)
+        {
+            start = i * block;
+            end = (ARRAY_SIZE % size != 0 && i == (size - 1)) ? (start + block + (ARRAY_SIZE % size) - 1) : start + block - 1;
+            
+            if (i == 0)
             {
-                sum += array[i];
+                for (int j = start; j <= end; j++)
+                {
+                    sum += array[j];
+                }
+            }
+            else
+            {
+                MPI_Send(&start, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
+                MPI_Send(&end, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
+                MPI_Send(&array[start], end - start + 1, MPI_INT, i, 0, MPI_COMM_WORLD);
             }
         }
-    */
-
+        free(array);
+    }
+    else
+    {
+        MPI_Recv(&start, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(&end, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        
+        int blockSize = end - start + 1;
+        int *subArray = (int *)malloc(blockSize * sizeof(int));
+        MPI_Recv(subArray, blockSize, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        for (int j = 0; j < blockSize; j++)
+        {
+            sum += subArray[j];
+        }
+        
+        free(subArray);
+    }
+    
     num = sum;
     // printf("Rank %d STARTS WITH %d\n", rank, sum);
+    startTime = MPI_Wtime(); // get_wall_seconds();
     for (int div = 1; div < size; div *= 2)
     {
         int partner;
@@ -68,6 +114,7 @@ int main(int argc, char **argv)
     {
         sum = num;
         printf("Sum is %d\n", sum);
+        printf("The summation took %f wall seconds.\n", MPI_Wtime() - startTime);
     }
 
     MPI_Finalize();

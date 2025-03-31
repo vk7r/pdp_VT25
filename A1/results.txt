@@ -1,0 +1,593 @@
+Sum is 4194304
+The summation took   0.660 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.987 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.318 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.639 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.732 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.066 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.388 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.710 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.113 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.443 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.782 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.121 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.341 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.673 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   1.001 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.320 wall seconds.
+---------------------------------
+Usage: ./treeSum <array_size>
+---------------------------------
+Usage: ./treeSum <array_size>
+---------------------------------
+Usage: ./treeSum <array_size>
+---------------------------------
+Usage: ./treeSum <array_size>
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 5184
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 5184
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 5184
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 5184
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 50295
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 50295
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 50295
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 50295
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 497511
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 497511
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 497511
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 497511
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 4952446
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 4952446
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 4952446
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 4952446
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 207664106
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 207664106
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 207664106
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 207664106
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+---------------------------------
+Sum is 4194304
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.007 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.006 wall seconds.
+---------------------------------
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took   0.000 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.004 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.006 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took   0.006 wall seconds.
+---------------------------------
+Sum is 100
+The summation took 0.000026 wall seconds.
+---------------------------------
+Sum is 100
+The summation took 0.000061 wall seconds.
+---------------------------------
+Sum is 100
+The summation took 0.000832 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took 0.000028 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took 0.000078 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took 0.000068 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took 0.000039 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took 0.000065 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took 0.000214 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took 0.000133 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took 0.000224 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took 0.000250 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took 0.003695 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took 0.006612 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took 0.005543 wall seconds.
+---------------------------------
+Sum is 100
+The summation took 0.000024 wall seconds.
+---------------------------------
+Sum is 100
+The summation took 0.000053 wall seconds.
+---------------------------------
+Sum is 100
+The summation took 0.000160 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took 0.000027 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took 0.000046 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took 0.000078 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took 0.000033 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took 0.000065 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took 0.000098 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took 0.000090 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took 0.000230 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took 0.000288 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took 0.002441 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took 0.004804 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took 0.004008 wall seconds.
+---------------------------------
+Running with array size 100 and 1 processes...
+Sum is 100
+The summation took 0.000024 wall seconds.
+---------------------------------
+Running with array size 100 and 2 processes...
+Sum is 100
+The summation took 0.000076 wall seconds.
+---------------------------------
+Running with array size 100 and 4 processes...
+Sum is 100
+The summation took 0.000071 wall seconds.
+---------------------------------
+Running with array size 1000 and 1 processes...
+Sum is 1000
+The summation took 0.000030 wall seconds.
+---------------------------------
+Running with array size 1000 and 2 processes...
+Sum is 1000
+The summation took 0.000065 wall seconds.
+---------------------------------
+Running with array size 1000 and 4 processes...
+Sum is 1000
+The summation took 0.000091 wall seconds.
+---------------------------------
+Running with array size 10000 and 1 processes...
+Sum is 10000
+The summation took 0.000031 wall seconds.
+---------------------------------
+Running with array size 10000 and 2 processes...
+Sum is 10000
+The summation took 0.000078 wall seconds.
+---------------------------------
+Running with array size 10000 and 4 processes...
+Sum is 10000
+The summation took 0.000104 wall seconds.
+---------------------------------
+Running with array size 100000 and 1 processes...
+Sum is 100000
+The summation took 0.000091 wall seconds.
+---------------------------------
+Running with array size 100000 and 2 processes...
+Sum is 100000
+The summation took 0.000170 wall seconds.
+---------------------------------
+Running with array size 100000 and 4 processes...
+Sum is 100000
+The summation took 0.000208 wall seconds.
+---------------------------------
+Running with array size 4194304 and 1 processes...
+Sum is 4194304
+The summation took 0.002030 wall seconds.
+---------------------------------
+Running with array size 4194304 and 2 processes...
+Sum is 4194304
+The summation took 0.004713 wall seconds.
+---------------------------------
+Running with array size 4194304 and 4 processes...
+Sum is 4194304
+The summation took 0.004805 wall seconds.
+---------------------------------
+array size: 100, p:  
+Sum is 100
+The summation took 0.000030 wall seconds.
+---------------------------------
+Sum is 100
+The summation took 0.000049 wall seconds.
+---------------------------------
+Sum is 100
+The summation took 0.000104 wall seconds.
+---------------------------------
+array size: 1000, p: 4 
+Sum is 1000
+The summation took 0.000028 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took 0.000047 wall seconds.
+---------------------------------
+Sum is 1000
+The summation took 0.000124 wall seconds.
+---------------------------------
+array size: 10000, p: 4 
+Sum is 10000
+The summation took 0.000032 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took 0.000066 wall seconds.
+---------------------------------
+Sum is 10000
+The summation took 0.000149 wall seconds.
+---------------------------------
+array size: 100000, p: 4 
+Sum is 100000
+The summation took 0.000091 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took 0.000163 wall seconds.
+---------------------------------
+Sum is 100000
+The summation took 0.000212 wall seconds.
+---------------------------------
+array size: 4194304, p: 4 
+Sum is 4194304
+The summation took 0.002060 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took 0.005135 wall seconds.
+---------------------------------
+Sum is 4194304
+The summation took 0.007580 wall seconds.
+---------------------------------
+______ array size: 100, p:  ______
+Sum is 5184
+The summation took 0.000024 wall seconds.
+---------------------------------
+Sum is 5184
+The summation took 0.000047 wall seconds.
+---------------------------------
+Sum is 5184
+The summation took 0.000136 wall seconds.
+---------------------------------
+______ array size: 1000, p: 4 ______
+Sum is 50295
+The summation took 0.000028 wall seconds.
+---------------------------------
+Sum is 50295
+The summation took 0.000053 wall seconds.
+---------------------------------
+Sum is 50295
+The summation took 0.000074 wall seconds.
+---------------------------------
+______ array size: 10000, p: 4 ______
+Sum is 497511
+The summation took 0.000033 wall seconds.
+---------------------------------
+Sum is 497511
+The summation took 0.000096 wall seconds.
+---------------------------------
+Sum is 497511
+The summation took 0.000104 wall seconds.
+---------------------------------
+______ array size: 100000, p: 4 ______
+Sum is 4952446
+The summation took 0.000074 wall seconds.
+---------------------------------
+Sum is 4952446
+The summation took 0.000195 wall seconds.
+---------------------------------
+Sum is 4952446
+The summation took 0.000232 wall seconds.
+---------------------------------
+______ array size: 4194304, p: 4 ______
+Sum is 207664106
+The summation took 0.001506 wall seconds.
+---------------------------------
+Sum is 207664106
+The summation took 0.004553 wall seconds.
+---------------------------------
+Sum is 207664106
+The summation took 0.006189 wall seconds.
+---------------------------------

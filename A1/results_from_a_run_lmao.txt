@@ -1,0 +1,55 @@
+Starting tests...
+ARRAY SIZE: 100
+Sum is 5184
+The summation took 0.000043 wall seconds.
+Sum is 5184
+The summation took 0.005805 wall seconds.
+Sum is 5184
+The summation took 0.000238 wall seconds.
+Sum is 5184
+The summation took 0.000169 wall seconds.
+
+
+ARRAY SIZE: 1000
+Sum is 50295
+The summation took 0.000044 wall seconds.
+Sum is 50295
+The summation took 0.015918 wall seconds.
+Sum is 50295
+The summation took 0.000208 wall seconds.
+Sum is 50295
+The summation took 0.000245 wall seconds.
+
+
+ARRAY SIZE: 10000
+Sum is 497511
+The summation took 0.000047 wall seconds.
+Sum is 497511
+The summation took 0.000147 wall seconds.
+Sum is 497511
+The summation took 0.000208 wall seconds.
+Sum is 497511
+The summation took 0.000344 wall seconds.
+
+
+ARRAY SIZE: 100000
+Sum is 4952446
+The summation took 0.000102 wall seconds.
+Sum is 4952446
+The summation took 0.006059 wall seconds.
+Sum is 4952446
+The summation took 0.000408 wall seconds.
+Sum is 4952446
+The summation took 0.000533 wall seconds.
+
+
+ARRAY SIZE: 4194304
+Sum is 207664106
+The summation took 0.002427 wall seconds.
+Sum is 207664106
+The summation took 0.007939 wall seconds.
+Sum is 207664106
+The summation took 0.010665 wall seconds.
+Sum is 207664106
+The summation took 0.012254 wall seconds.
+Testing complete

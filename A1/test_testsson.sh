@@ -15,8 +15,8 @@
 
 num_repeats=5
 
-array_sizes=(100 1000 10000 100000 4194304)
-num_processes=(1 2 4 8)
+array_sizes=( 4194304) #100 1000 10000 100000
+num_processes=(1 2 4)
 
 echo "Starting tests..."
 

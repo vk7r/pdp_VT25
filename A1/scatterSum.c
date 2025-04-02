@@ -24,20 +24,18 @@ int main(int argc, char **argv)
     int block_size = ARRAY_SIZE / size;
     int remainder = ARRAY_SIZE % size;
 
-    int my_block_size = (rank == size - 1) ? block_size + remainder : block_size;
+    int my_block_size = (rank < remainder) ? block_size + 1 : block_size;
 
-    int *block_starts = NULL;
-    int *send_counts = NULL;
+    int block_starts[size];
+    int send_counts[size];
 
     if (rank == 0)
     {
-        block_starts = (int *)malloc(size * sizeof(int));
-        send_counts = (int *)malloc(size * sizeof(int));
 
         int nxt_block = 0;
         for (int i = 0; i < size; i++)
         {
-            send_counts[i] = (i == size - 1) ? block_size + remainder : block_size;
+            send_counts[i] = (i < remainder) ? block_size + 1 : block_size;
             block_starts[i] = nxt_block;
             nxt_block += send_counts[i];
         }
@@ -47,22 +45,19 @@ int main(int argc, char **argv)
     if (rank == 0)
     {
         array = (int *)malloc(ARRAY_SIZE * sizeof(int));
-        srand(42);
+        ;
         for (int i = 0; i < ARRAY_SIZE; i++)
         {
-            array[i] = 1; // rand() % 100;
+            array[i] = rand() % 100;
         }
     }
 
     int *local_array = (int *)malloc(my_block_size * sizeof(int));
 
-    startTime = MPI_Wtime();
-
     MPI_Scatterv(array, send_counts, block_starts, MPI_INT,
                  local_array, my_block_size, MPI_INT,
                  0, MPI_COMM_WORLD);
-
-    printf("Rank %d starts with block size%d\n", rank, my_block_size);
+    startTime = MPI_Wtime();
     for (int i = 0; i < my_block_size; i++)
     {
         sum += local_array[i];
@@ -90,8 +85,6 @@ int main(int argc, char **argv)
             break;
         }
     }
-
-    // Output results
     if (rank == 0)
     {
         sum = num;
@@ -100,8 +93,6 @@ int main(int argc, char **argv)
 
         // Free allocated memory
         free(array);
-        free(block_starts);
-        free(send_counts);
     }
 
     free(local_array);

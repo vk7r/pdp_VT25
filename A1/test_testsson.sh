@@ -29,7 +29,8 @@ for ((run=1; run<=num_repeats; run++)); do
         echo "ARRAY SIZE: $size"
         for proc in "${num_processes[@]}"; do
             echo "Running with $proc processes..."
-            mpirun -np $proc ./sum $size
+            size2=$((size * $proc))
+            mpirun -np $proc ./sum $size2
         done
     done
 done

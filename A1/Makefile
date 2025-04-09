@@ -10,7 +10,7 @@ BIN = sum
 
 all: $(BIN)
 
-sum: scatterSum.c
+sum: sum.c
 	$(CC) $(CFLAGS) -o $@ $< $(LIBS)
 	
 clean:

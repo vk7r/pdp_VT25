@@ -2,75 +2,99 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ARRAY_SIZE 9
-
-int array[ARRAY_SIZE] = {2, 3, 4, 5, 6, 7, 8, 9, 10};
-
 int main(int argc, char **argv)
 {
-	int rank, size;
-	int sum = 0;
-	int received;
-	int num;
+    int rank, size;
+    int sum = 0;
+    int received;
+    int num;
+    double startTime;
 
-	MPI_Init(&argc, &argv);
-	MPI_Comm_size(MPI_COMM_WORLD, &size);
-	// printf("Size is %d\n", size);
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if (argc != 2)
+    {
+        printf("Usage: %s <array_size>\n", argv[0]);
+        return 1;
+    }
+    int ARRAY_SIZE = atoi(argv[1]);
 
-	// int num = rank; //+ rand() % 100;
-	int sizeOfArray = sizeof(array) / sizeof(array[0]);
-	int block = sizeOfArray / size;
-	int start = rank * block;
-	int end = (sizeOfArray % size != 0 && rank == (size - 1)) ? (start + block + (sizeOfArray % size) - 1) : start + block - 1;
-	printf("Rank %d starts with %d and ends with %d\n", rank, start, end);
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-	for (int j = start; j <= end; j++)
-	{
-		sum += array[j];
-	}
-	// alternative way to hand out the array
-	/*  for (int i = 0; i < sizeOfArray; i++)
-		{
-			if (i % size == rank)
-			{
-				sum += array[i];
-			}
-		}
-	*/
+    int block_size = ARRAY_SIZE / size;
+    int remainder = ARRAY_SIZE % size;
 
-	num = sum;
-	// printf("Rank %d STARTS WITH %d\n", rank, sum);
-	for (int div = 1; div < size; div *= 2)
-	{
-		int partner;
+    int my_block_size = (rank < remainder) ? block_size + 1 : block_size;
 
-		if (rank % (div * 2) == 0)
-		{
-			partner = rank + div;
-			if (partner < size) // Check if the rank is not the last one
-			{
-				MPI_Recv(&received, 1, MPI_INT, partner, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				num += received;
-				//       printf("Rank %d received %d from Rank %d\n", rank, sum, partner);
-			}
-		}
-		else // will never be rank 0, send to partner depending on the div
-		{
-			partner = rank - div;
-			//      printf("I: %d WANT TO SEND %d\n", rank, num);
-			MPI_Send(&num, 1, MPI_INT, partner, 0, MPI_COMM_WORLD);
-			break;
-		}
-	}
+    int block_starts[size];
+    int send_counts[size];
 
-	if (rank == 0)
-	{
-		sum = num;
-		printf("Sum is %d\n", sum);
-	}
+    if (rank == 0)
+    {
 
-	MPI_Finalize();
+        int nxt_block = 0;
+        for (int i = 0; i < size; i++)
+        {
+            send_counts[i] = (i < remainder) ? block_size + 1 : block_size;
+            block_starts[i] = nxt_block;
+            nxt_block += send_counts[i];
+        }
+    }
 
-	return 0;
+    int *array = NULL;
+    if (rank == 0)
+    {
+        array = (int *)malloc(ARRAY_SIZE * sizeof(int));
+        ;
+        for (int i = 0; i < ARRAY_SIZE; i++)
+        {
+            array[i] = rand() % 100;
+        }
+    }
+
+    int *local_array = (int *)malloc(my_block_size * sizeof(int));
+
+    MPI_Scatterv(array, send_counts, block_starts, MPI_INT,
+                 local_array, my_block_size, MPI_INT,
+                 0, MPI_COMM_WORLD);
+    startTime = MPI_Wtime();
+    for (int i = 0; i < my_block_size; i++)
+    {
+        sum += local_array[i];
+    }
+
+    num = sum;
+
+    for (int div = 1; div < size; div *= 2)
+    {
+        int partner;
+
+        if (rank % (div * 2) == 0)
+        {
+            partner = rank + div;
+            if (partner < size)
+            {
+                MPI_Recv(&received, 1, MPI_INT, partner, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                num += received;
+            }
+        }
+        else
+        {
+            partner = rank - div;
+            MPI_Send(&num, 1, MPI_INT, partner, 0, MPI_COMM_WORLD);
+            break;
+        }
+    }
+    if (rank == 0)
+    {
+        sum = num;
+        printf("Sum is %d\n", sum);
+        printf("The summation took %f wall seconds.\n", MPI_Wtime() - startTime);
+        free(array);
+    }
+
+    free(local_array);
+    MPI_Finalize();
+
+    return 0;
 }

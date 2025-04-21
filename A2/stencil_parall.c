@@ -19,12 +19,6 @@ int main(int argc, char **argv)
 	int rank, num_proc;
 	double start;
 
-	// Stencil values
-	double h = 2.0 * PI / num_values;
-	const int STENCIL_WIDTH = 5;
-	const int EXTENT = STENCIL_WIDTH / 2;
-	const double STENCIL[] = {1.0 / (12 * h), -8.0 / (12 * h), 0.0, 8.0 / (12 * h), -1.0 / (12 * h)};
-
 	// Read input file
 	if (0 > (num_values = read_input(input_name, &input)))
 	{
@@ -36,6 +30,12 @@ int main(int argc, char **argv)
 		perror("Couldn't allocate memory for output");
 		return 2;
 	}
+
+	// Stencil values
+	double h = 2.0 * PI / num_values;
+	const int STENCIL_WIDTH = 5;
+	const int EXTENT = STENCIL_WIDTH / 2;
+	const double STENCIL[] = {1.0 / (12 * h), -8.0 / (12 * h), 0.0, 8.0 / (12 * h), -1.0 / (12 * h)};
 
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &num_proc);

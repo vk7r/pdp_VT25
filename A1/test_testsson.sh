@@ -34,5 +34,4 @@ for ((run=1; run<=num_repeats; run++)); do
         done
     done
 done
-
 echo "Testing complete"

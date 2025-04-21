@@ -49,17 +49,17 @@ int main(int argc, char **argv)
 	// Start timer
 	start = MPI_Wtime();
 
-	printf("number values %d\n", num_values);
+	//	printf("number values %d\n", num_values);
 	MPI_Scatter(input, chunk_size, MPI_DOUBLE, local_input, chunk_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-	printf("Rank %d received %d elements\n", rank, chunk_size);
-	printf("Rank %d received %f\n", rank, local_input[0]);
+	//	printf("Rank %d received %d elements\n", rank, chunk_size);
+	//	printf("Rank %d received %f\n", rank, local_input[0]);
 	// Repeatedly apply stencil
 
 	int local_num_values = chunk_size;
 	for (int s = 0; s < num_steps; s++)
 	{
 		double left_gray[2] = {local_input[0], local_input[1]};
-		double right_gray[2] = {local_input[chunk_size - 1], local_input[chunk_size - 2]};
+		double right_gray[2] = {local_input[chunk_size - 2], local_input[chunk_size - 1]};
 
 		double borrowed_left_gray[2];
 		double borrowed_right_gray[2];
@@ -76,10 +76,10 @@ int main(int argc, char **argv)
 			borrowed_left_gray, 2, MPI_DOUBLE, (rank - 1 + num_proc) % num_proc, 1, // receive from left neighbor
 			MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-		printf("Rank %d sent left [%f,%f]\n", rank, left_gray[0], left_gray[1]);
-		printf("Rank %d sent right [%f,%f]\n", rank, right_gray[0], right_gray[1]);
-		printf("Rank %d borrowed left [%f,%f]\n", rank, borrowed_left_gray[0], borrowed_left_gray[1]);
-		printf("Rank %d borrowed right [%f,%f]\n", rank, borrowed_right_gray[0], borrowed_right_gray[1]);
+		//	printf("Rank %d sent left [%f,%f]\n", rank, left_gray[0], left_gray[1]);
+		//	printf("Rank %d sent right [%f,%f]\n", rank, right_gray[0], right_gray[1]);
+		//	printf("Rank %d borrowed left [%f,%f]\n", rank, borrowed_left_gray[0], borrowed_left_gray[1]);
+		//	printf("Rank %d borrowed right [%f,%f]\n", rank, borrowed_right_gray[0], borrowed_right_gray[1]);
 
 		// Apply stencil //vänster
 		for (int i = 0; i < EXTENT; i++)
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 				int index = (i - EXTENT + j);
 				if (index < 0)
 				{
-					result += STENCIL[j] * borrowed_right_gray[(index + local_num_values) % 2];
+					result += STENCIL[j] * borrowed_left_gray[(index + 2) % 2];
 				}
 				else
 				{
@@ -119,9 +119,9 @@ int main(int argc, char **argv)
 			for (int j = 0; j < STENCIL_WIDTH; j++)
 			{
 				int index = (i - EXTENT + j);
-				if (index > local_num_values - 1)
+				if (index >= local_num_values)
 				{
-					result += STENCIL[j] * borrowed_left_gray[(index % 2)];
+					result += STENCIL[j] * borrowed_right_gray[((index - local_num_values) % 2)];
 				}
 				else
 				{
@@ -140,29 +140,27 @@ int main(int argc, char **argv)
 			local_output = tmp;
 		}
 	}
-	MPI_Gather(local_input, chunk_size, MPI_DOUBLE, output, chunk_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	double execution_time = MPI_Wtime() - start;
+	MPI_Gather(local_output, chunk_size, MPI_DOUBLE, output, chunk_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
 	if (rank == 0)
 	{
-		printf("\n\nfinal array: [%f, ..., %f]\n\n", output[0], output[num_values - 1]);
-	}
+		printf("time: %f\n", execution_time);
 
-	MPI_Finalize();
-	free(input);
-	// Stop timer
-	double my_execution_time = MPI_Wtime() - start;
-
-	// Write result
-	printf("%f\n", my_execution_time);
 #ifdef PRODUCE_OUTPUT_FILE
-	if (0 != write_output(output_name, output, num_values))
-	{
-		return 2;
-	}
+		if (write_output(output_name, output, num_values) != 0)
+		{
+			MPI_Abort(MPI_COMM_WORLD, 2);
+		}
 #endif
 
-	// Clean up
-	free(output);
+		free(input);
+		free(output);
+	}
+
+	free(local_input);
+	free(local_output);
+	MPI_Finalize();
 
 	return 0;
 }

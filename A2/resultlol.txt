@@ -1,0 +1,84 @@
+number values 96
+number values 96
+number values 96
+number values 96
+Rank 3 received 24 elements
+Rank 3 received -1.000000
+Rank 3 sent left [-1.000000,-0.997859]
+Rank 3 sent right [-0.130526,-0.065403]
+Rank 3 borrowed left [-0.991445,-0.997859]
+Rank 3 borrowed right [0.000000,0.065403]
+Rank 3 sent left [0.000000,0.065403]
+Rank 3 sent right [0.991444,0.997858]
+Rank 3 borrowed left [-0.130526,-0.065403]
+Rank 3 borrowed right [0.999999,0.997858]
+Rank 3 sent left [0.999999,0.997858]
+Rank 3 sent right [0.130526,0.065403]
+Rank 3 borrowed left [0.991444,0.997858]
+Rank 3 borrowed right [-0.000000,-0.065403]
+Rank 1 received 24 elements
+Rank 1 received 1.000000
+Rank 1 sent left [1.000000,0.997859]
+Rank 1 sent right [0.130526,0.065403]
+Rank 1 borrowed left [0.991445,0.997859]
+Rank 1 borrowed right [0.000000,-0.065403]
+Rank 1 sent left [-0.000000,-0.065403]
+Rank 1 sent right [-0.991444,-0.997858]
+Rank 1 borrowed left [0.130526,0.065403]
+Rank 1 borrowed right [-0.999999,-0.997858]
+Rank 1 sent left [-0.999999,-0.997858]
+Rank 1 sent right [-0.130526,-0.065403]
+Rank 1 borrowed left [-0.991444,-0.997858]
+Rank 1 borrowed right [0.000000,0.065403]
+Rank 0 received 24 elements
+Rank 0 received 0.000000
+Rank 0 sent left [0.000000,0.065403]
+Rank 0 sent right [0.991445,0.997859]
+Rank 0 borrowed left [-0.130526,-0.065403]
+Rank 0 borrowed right [1.000000,0.997859]
+Rank 0 sent left [0.999999,0.997858]
+Rank 0 sent right [0.130526,0.065403]
+Rank 0 borrowed left [0.991444,0.997858]
+Rank 0 borrowed right [-0.000000,-0.065403]
+Rank 0 sent left [-0.000000,-0.065403]
+Rank 0 sent right [-0.991444,-0.997858]
+Rank 0 borrowed left [0.130526,0.065403]
+Rank 0 borrowed right [-0.999999,-0.997858]
+Rank 2 received 24 elements
+Rank 2 received 0.000000
+Rank 2 sent left [0.000000,-0.065403]
+Rank 2 sent right [-0.991445,-0.997859]
+Rank 2 borrowed left [0.130526,0.065403]
+Rank 2 borrowed right [-1.000000,-0.997859]
+Rank 2 sent left [-0.999999,-0.997858]
+Rank 2 sent right [-0.130526,-0.065403]
+Rank 2 borrowed left [-0.991444,-0.997858]
+Rank 2 borrowed right [0.000000,0.065403]
+Rank 2 sent left [0.000000,0.065403]
+Rank 1 sent left [0.000000,0.065403]
+Rank 1 sent right [0.991443,0.997857]
+Rank 1 borrowed left [-0.130526,-0.065403]
+Rank 3 sent left [-0.000000,-0.065403]
+Rank 3 sent right [-0.991443,-0.997857]
+Rank 3 borrowed left [0.130526,0.065403]
+Rank 3 borrowed right [-0.999998,-0.997857]
+Rank 2 sent right [0.991444,0.997858]
+Rank 2 borrowed left [-0.130526,-0.065403]
+Rank 2 borrowed right [0.999999,0.997858]
+Rank 2 sent left [0.999998,0.997857]
+Rank 2 sent right [0.130526,0.065403]
+Rank 2 borrowed left [0.991443,0.997857]
+Rank 2 borrowed right [-0.000000,-0.065403]
+Rank 0 sent left [-0.999998,-0.997857]
+Rank 0 sent right [-0.130526,-0.065403]
+Rank 0 borrowed left [-0.991443,-0.997857]
+Rank 0 borrowed right [0.000000,0.065403]
+
+
+final array: [0.000000, ..., -0.065401]
+
+Rank 1 borrowed right [0.999998,0.997857]
+0.051502
+0.051402
+0.051485
+0.061332

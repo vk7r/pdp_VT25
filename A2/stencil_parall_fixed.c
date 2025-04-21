@@ -136,14 +136,13 @@ int main(int argc, char **argv)
         }
     }
 
+    double execution_time = MPI_Wtime() - start;
     MPI_Gather(local_output, chunk_size, MPI_DOUBLE, output, chunk_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
-    double my_execution_time = MPI_Wtime() - start;
 
     if (rank == 0)
     {
         printf("\nfinal array: [%f, ..., %f]\n", output[0], output[num_values - 1]);
-        printf("%f\n", my_execution_time);
+        printf("%f\n", execution_time);
 
 #ifdef PRODUCE_OUTPUT_FILE
         if (write_output(output_name, output, num_values) != 0)

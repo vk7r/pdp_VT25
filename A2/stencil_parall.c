@@ -46,6 +46,7 @@ int main(int argc, char **argv)
 	local_input = malloc(chunk_size * sizeof(double));
 	local_output = malloc(chunk_size * sizeof(double));
 
+	MPI_Barrier(MPI_COMM_WORLD);
 	// Start timer
 	start = MPI_Wtime();
 
@@ -157,12 +158,14 @@ int main(int argc, char **argv)
 			local_output = tmp;
 		}
 	}
+	MPI_Barrier(MPI_COMM_WORLD);
 	double execution_time = MPI_Wtime() - start;
+	double max_time;
+	MPI_Reduce(&execution_time, &max_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 	MPI_Gather(local_output, chunk_size, MPI_DOUBLE, output, chunk_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
+	
 	if (rank == 0)
-	{
-		printf("time: %f\n", execution_time);
+		printf("Maximum execution time: %f\n", max_time);
 
 #ifdef PRODUCE_OUTPUT_FILE
 		if (write_output(output_name, output, num_values) != 0)

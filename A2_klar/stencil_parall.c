@@ -45,16 +45,11 @@ int main(int argc, char **argv)
 	// Allocate data for local input
 	local_input = malloc(chunk_size * sizeof(double));
 	local_output = malloc(chunk_size * sizeof(double));
-
+    MPI_Scatter(input, chunk_size, MPI_DOUBLE, local_input, chunk_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	MPI_Barrier(MPI_COMM_WORLD);
 	// Start timer
 	start = MPI_Wtime();
-
-	//	printf("number values %d\n", num_values);
-	MPI_Scatter(input, chunk_size, MPI_DOUBLE, local_input, chunk_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-	//	printf("Rank %d received %d elements\n", rank, chunk_size);
-	//	printf("Rank %d received %f\n", rank, local_input[0]);
 	// Repeatedly apply stencil
-
 	int local_num_values = chunk_size;
 	for (int s = 0; s < num_steps; s++)
 	{
@@ -76,10 +71,6 @@ int main(int argc, char **argv)
 			borrowed_left_gray, 2, MPI_DOUBLE, (rank - 1 + num_proc) % num_proc, 1, // receive from left neighbor
 			MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-		//	printf("Rank %d sent left [%f,%f]\n", rank, left_gray[0], left_gray[1]);
-		//	printf("Rank %d sent right [%f,%f]\n", rank, right_gray[0], right_gray[1]);
-		//	printf("Rank %d borrowed left [%f,%f]\n", rank, borrowed_left_gray[0], borrowed_left_gray[1]);
-		//	printf("Rank %d borrowed right [%f,%f]\n", rank, borrowed_right_gray[0], borrowed_right_gray[1]);
 
 		// Apply stencil //vänster
 		for (int i = 0; i < EXTENT; i++)
@@ -112,23 +103,6 @@ int main(int argc, char **argv)
 			local_output[i] = result;
 		}
 
-		for (int i=0; i<chunk_size; i++) {
-			double result = 0.0;
-			for (int j=0; j<STENCIL_WIDTH; j++) {
-				int index = i - EXTENT + j;
-				if (index < 0) {
-					result += STENCIL[j] * borrowed_left_gray[EXTENT + index];
-				}
-				else if (index >= chunk_size) {
-					result += STENCIL[j] * borrowed_right_gray[index - chunk_size];
-				}
-				else {
-					result += STENCIL[j] * local_input[index];
-				}
-			}
-			local_output[i] = result;
-		}
-
 		// Apply stencil //höger
 		for (int i = local_num_values - EXTENT; i < local_num_values; i++)
 		{
@@ -148,7 +122,6 @@ int main(int argc, char **argv)
 			}
 			local_output[i] = result;
 		}
-
 		// Swap input and output
 		if (s < num_steps - 1)
 		{
@@ -157,12 +130,12 @@ int main(int argc, char **argv)
 			local_output = tmp;
 		}
 	}
+	MPI_Barrier(MPI_COMM_WORLD);
 	double execution_time = MPI_Wtime() - start;
 	MPI_Gather(local_output, chunk_size, MPI_DOUBLE, output, chunk_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
-	if (rank == 0)
-	{
-		printf("time: %f\n", execution_time);
+	
+	if (rank == 0){
+		printf("Maximum execution time: %f\n", execution_time);
 
 #ifdef PRODUCE_OUTPUT_FILE
 		if (write_output(output_name, output, num_values) != 0)

@@ -139,7 +139,6 @@ int main(int argc, char **argv)
 	local_execution_time = MPI_Wtime() - local_start;
 
 	// Receive the max execution time from all ranks, MPI_MAX will give the maximum execution time
-	double max_execution_time;
 	MPI_Reduce(&local_execution_time, &max_execution_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 	if (rank == 0)
 	{

@@ -138,10 +138,9 @@ int main(int argc, char **argv)
     // End timer on each rank
     local_execution_time = MPI_Wtime() - local_start;
 
-    // Gather execution times from all ranks
+    // Receive the max execution time from all ranks, MPI_MAX will give the maximum execution time
+    double max_execution_time;
     MPI_Reduce(&local_execution_time, &max_execution_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
-
-    // Only rank 0 prints the maximum execution time
     if (rank == 0) {
         printf("Maximum execution time: %f\n", max_execution_time);
     }

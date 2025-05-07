@@ -10,7 +10,7 @@ BIN = stencil
 
 all: $(BIN)
 
-stencil: stencil_parall.c stencil.h
+stencil: stencil_fixed.c stencil.h
 	$(CC) $(CFLAGS) -o $@ $< $(LIBS)
 	
 clean:

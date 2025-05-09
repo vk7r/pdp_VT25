@@ -1,7 +1,13 @@
 {
   "files.associations": {
     "type_traits": "c",
-    "*.tcc": "c"
+    "*.tcc": "c",
+    "array": "c",
+    "string_view": "c",
+    "initializer_list": "c",
+    "utility": "c",
+    "string": "c",
+    "bit": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

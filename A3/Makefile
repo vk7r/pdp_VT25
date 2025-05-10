@@ -1,5 +1,5 @@
 CC = mpicc
-CFLAGS = -Wall -O3 -g
+CFLAGS =  -O3 -g #-Wall
 BINS = quicksort
 
 all: $(BINS)

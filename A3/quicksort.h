@@ -46,7 +46,7 @@ void gather_on_root(int *all_elements, int *my_elements, int local_n);
  * @param pivot_strategy Tells how to select the pivot element. See documentation of select_pivot in pivot.h.
  * @return New length of *elements
  */
-int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy);
+int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy, int recursion_level);
 
 /**
  * Merge v1 and v2 to one array, sorted in ascending order, and store the result

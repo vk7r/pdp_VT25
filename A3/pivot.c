@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <mpi.h>
 
+#include "pivot.h"
+
 int get_median(int *elements, int n)
 {
     // If even, return the average of the two middle elements
@@ -15,7 +17,7 @@ int get_median(int *elements, int n)
     }
 }
 
-int get_larger_index(int *elements, int n, int val);
+int get_larger_index(int *elements, int n, int val)
 {
     for (int i = 0; i < n; i++)
     {
@@ -29,21 +31,17 @@ int get_larger_index(int *elements, int n, int val);
 
 int select_pivot(int pivot_strategy, int *elements, int n, MPI_Comm communicator)
 {
-    if (pivot_strategy == 0)
-    {
-        return select_pivot_smallest_root(elements, n, communicator);
-    }
-    else if (pivot_strategy == 1)
+    if (pivot_strategy == 1)
     {
         return select_pivot_median_root(elements, n, communicator);
     }
     else if (pivot_strategy == 2)
     {
-        return select_pivot_mean_median(elements, n, communicator);
+        return -2; // select_pivot_mean_median(elements, n, communicator);
     }
     else if (pivot_strategy == 3)
     {
-        return select_pivot_median_median(elements, n, communicator);
+        return -2; // select_pivot_median_median(elements, n, communicator);
     }
     else
     {

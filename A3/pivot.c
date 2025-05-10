@@ -1,12 +1,19 @@
-#include <stdio.h>
 #include <mpi.h>
-
+#include <stdio.h>
+#include <stdlib.h>
 #include "pivot.h"
+#include "quicksort.h"
+
+int compare(const void *a, const void *b)
+{
+    return (*(int *)a - *(int *)b);
+}
 
 int get_median(int *elements, int n)
 {
     // If even, return the average of the two middle elements
     // if odd, return the middle element
+
     if (n % 2 == 0)
     {
         return (elements[n / 2 - 1] + elements[n / 2]) / 2;
@@ -15,6 +22,16 @@ int get_median(int *elements, int n)
     {
         return elements[n / 2];
     }
+}
+
+int get_mean(int *elements, int n)
+{
+    int sum = 0;
+    for (int i = 0; i < n; i++)
+    {
+        sum += elements[i];
+    }
+    return sum / n;
 }
 
 int get_larger_index(int *elements, int n, int val)
@@ -37,11 +54,11 @@ int select_pivot(int pivot_strategy, int *elements, int n, MPI_Comm communicator
     }
     else if (pivot_strategy == 2)
     {
-        return -2; // select_pivot_mean_median(elements, n, communicator);
+        return select_pivot_median_median(elements, n, communicator);
     }
     else if (pivot_strategy == 3)
     {
-        return -2; // select_pivot_median_median(elements, n, communicator);
+        return select_pivot_mean_median(elements, n, communicator);
     }
     else
     {
@@ -71,6 +88,60 @@ int select_pivot_median_root(int *elements, int n, MPI_Comm communicator)
         pivot = get_median(elements, n);
     }
     // Broadcast the pivot to all processes
+    MPI_Bcast(&pivot, 1, MPI_INT, 0, communicator);
+    int index = get_larger_index(elements, n, pivot);
+    if (rank == 0)
+    {
+        printf("Pivot: %d\n", pivot);
+    }
+    return index;
+}
+
+int select_pivot_median_median(int *elements, int n, MPI_Comm communicator)
+{
+    int pivot = 0;
+    int rank, size;
+    MPI_Comm_rank(communicator, &rank);
+    MPI_Comm_size(communicator, &size);
+    int pivots[size];
+    pivot = get_median(elements, n);
+
+    MPI_Gather(&pivot, 1, MPI_INT, pivots, 1, MPI_INT, 0, communicator);
+    MPI_Barrier(communicator);
+    // printf("Rank %d: My Median: %d\n", rank, pivot);
+    if (rank == 0)
+    {
+
+        // Sort the list of medians
+        qsort(pivots, size, sizeof(int), compare);
+        pivot = get_median(pivots, size);
+    }
+    MPI_Bcast(&pivot, 1, MPI_INT, 0, communicator);
+    int index = get_larger_index(elements, n, pivot);
+    if (rank == 0)
+    {
+        printf("Pivot: %d\n", pivot);
+    }
+    return index;
+}
+
+int select_pivot_mean_median(int *elements, int n, MPI_Comm communicator)
+{
+    int pivot = 0;
+    int rank, size;
+    MPI_Comm_rank(communicator, &rank);
+    MPI_Comm_size(communicator, &size);
+    int pivots[size];
+    pivot = get_median(elements, n);
+
+    MPI_Gather(&pivot, 1, MPI_INT, pivots, 1, MPI_INT, 0, communicator);
+
+    MPI_Barrier(communicator);
+    // printf("Rank %d: My Median: %d\n", rank, pivot);
+    if (rank == 0)
+    {
+        pivot = get_mean(pivots, size);
+    }
     MPI_Bcast(&pivot, 1, MPI_INT, 0, communicator);
     int index = get_larger_index(elements, n, pivot);
     if (rank == 0)

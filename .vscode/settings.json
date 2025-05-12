@@ -10,7 +10,8 @@
     "bit": "c",
     "stdlib.h": "c",
     "quicksort.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "algorithm": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

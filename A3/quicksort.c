@@ -79,47 +79,12 @@ int distribute_from_root(int *all_elements, int n, int **my_elements)
 
     int my_count = send_counts[rank];
     *my_elements = malloc(n * sizeof(int));
-    // printf("Before scatterv\n\n");
+
     MPI_Scatterv(all_elements, send_counts, block_starts, MPI_INT,
                  *my_elements, my_count, MPI_INT,
                  0, MPI_COMM_WORLD);
     return my_count;
 }
-
-// int distribute_from_root(int *all_elements, int n, int **my_elements)
-// {
-//     int rank, size;
-//     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-//     MPI_Comm_size(MPI_COMM_WORLD, &size);
-
-//     int remainder = n % size;
-//     int chunk_size = (n - remainder) / size;
-
-//     if (rank == 0)
-//     {
-//         Need to handle the case where n is not divisible by size
-//         Root node keeps the remainder, everyone else gets chunk_size
-//         *my_elements = malloc((chunk_size + remainder) * sizeof(int));
-//         printf("BEFORE SCATTER ROOT\n");
-//         MPI_Scatter(all_elements + remainder, chunk_size, MPI_INT, my_elements, chunk_size,
-//                     MPI_INT, 0, MPI_COMM_WORLD);
-//         printf("AFTER SCATTER ROOT\n");
-//         chunk_size = chunk_size + remainder;
-//         Handwavy, pointer at the start of the array will be moved by remainder so we need to move it back
-//         memcpy(my_elements, all_elements, chunk_size * sizeof(int));
-//     }
-//     else
-//     {
-//         *my_elements = malloc(chunk_size * sizeof(int));
-//         printf("BEFORE SCATTER NOT ROOT\n");
-//         MPI_Scatter(NULL, chunk_size, MPI_INT, *my_elements, chunk_size, MPI_INT, 0,
-//                     MPI_COMM_WORLD);
-//         printf("AFter SCATTER NOT ROOT\n");
-//     }
-//     printf("My chunk size: %d, rank %d\n", chunk_size, rank);
-
-//     return chunk_size;
-// }
 
 void merge_ascending(int *v1, int n1, int *v2, int n2, int *result)
 {
@@ -171,9 +136,10 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
     int larger_index = select_pivot(pivot_strategy, *elements, n, communicator);
     int size_set_small = larger_index;
     int size_set_large = n - larger_index;
-
     int set_small[size_set_small];
     int set_large[size_set_large];
+    // int *set_small = malloc(size_set_small * sizeof(int));
+    // int *set_large = malloc(size_set_large * sizeof(int));
 
     int size, rank;
     MPI_Group world_group;
@@ -184,9 +150,7 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
     MPI_Comm small_comm;
     MPI_Group big_group;
     MPI_Comm big_comm;
-
     int Recv_set_size = 0;
-    int Recv_set[n];
 
     int j = 0;
     for (int i = 0; i < n; i++)
@@ -235,20 +199,21 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
         MPI_Comm_size(small_comm, &small_size);
         MPI_Comm_rank(small_comm, &small_rank);
 
-        // Send if there’s a corresponding partner in the big group
-        if (small_rank < size - middle)
-        {
-            int partner = big_ranks[small_rank];
-            // Send the size of the buffer to transfer // Receive the size of received buffer
-            MPI_Sendrecv(&size_set_large, 1, MPI_INT, partner, 0,
-                         &Recv_set_size, 1, MPI_INT, partner, 0,
-                         communicator, MPI_STATUS_IGNORE);
+        // Send to a corresponding partner in the big group
 
-            // Swap set of numbers with "partner" process in other group.
-            MPI_Sendrecv(set_large, size_set_large, MPI_INT, partner, 0,
-                         Recv_set, Recv_set_size, MPI_INT, partner, 0,
-                         communicator, MPI_STATUS_IGNORE);
-        }
+        int partner = big_ranks[small_rank];
+        // Send the size of the buffer to transfer // Receive the size of received buffer
+        MPI_Sendrecv(&size_set_large, 1, MPI_INT, partner, 0,
+                     &Recv_set_size, 1, MPI_INT, partner, 0,
+                     communicator, MPI_STATUS_IGNORE);
+
+        int *Recv_set = malloc(Recv_set_size * sizeof(int));
+
+        // Swap set of numbers with "partner" process in other group.
+        MPI_Sendrecv(set_large, size_set_large, MPI_INT, partner, 0,
+                     Recv_set, Recv_set_size, MPI_INT, partner, 0,
+                     communicator, MPI_STATUS_IGNORE);
+
         // Populate new list
         int new_list_size = size_set_small + Recv_set_size;
         merge_ascending(set_small, size_set_small, Recv_set, Recv_set_size, (*elements));
@@ -262,23 +227,17 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
                 MPI_Comm_free(&small_comm);
             if (big_comm != MPI_COMM_NULL)
                 MPI_Comm_free(&big_comm);
-
+            free(Recv_set);
             return result;
         }
         else
         {
-            // printf("Rank %d: IN GLOBAL SORT Finished with new local list: [", rank);
-            // for (int i = 0; i < new_list_size; i++)
-            // {
-            //     printf("%d, ", (*elements)[i]);
-            // }
-            // printf("]\n");
             // Free communicators after recursion
             if (small_comm != MPI_COMM_NULL)
                 MPI_Comm_free(&small_comm);
             if (big_comm != MPI_COMM_NULL)
                 MPI_Comm_free(&big_comm);
-
+            free(Recv_set);
             return new_list_size;
         }
     }
@@ -287,19 +246,19 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
         // BIG GROUP
         MPI_Comm_size(big_comm, &big_size);
         MPI_Comm_rank(big_comm, &big_rank);
-        // Send if there’s a corresponding partner in the small group
-        if (big_rank < middle)
-        {
-            int partner = small_ranks[big_rank];
-            // Send the size of the buffer to transfer // Receive the size of received buffer
-            MPI_Sendrecv(&size_set_small, 1, MPI_INT, partner, 0,
-                         &Recv_set_size, 1, MPI_INT, partner, 0,
-                         communicator, MPI_STATUS_IGNORE);
-            // Swap set of numbers with "partner" process in other group.
-            MPI_Sendrecv(set_small, size_set_small, MPI_INT, partner, 0,
-                         Recv_set, Recv_set_size, MPI_INT, partner, 0,
-                         communicator, MPI_STATUS_IGNORE);
-        }
+        // Send to a corresponding partner in the small group
+        int partner = small_ranks[big_rank];
+        // Send the size of the buffer to transfer // Receive the size of received buffer
+        MPI_Sendrecv(&size_set_small, 1, MPI_INT, partner, 0,
+                     &Recv_set_size, 1, MPI_INT, partner, 0,
+                     communicator, MPI_STATUS_IGNORE);
+
+        int *Recv_set = malloc(Recv_set_size * sizeof(int));
+
+        // Swap set of numbers with "partner" process in other group.
+        MPI_Sendrecv(set_small, size_set_small, MPI_INT, partner, 0,
+                     Recv_set, Recv_set_size, MPI_INT, partner, 0,
+                     communicator, MPI_STATUS_IGNORE);
         // Populate new list
         int new_list_size = size_set_large + Recv_set_size;
         merge_ascending(set_large, size_set_large, Recv_set, Recv_set_size, (*elements));
@@ -314,23 +273,18 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
                 MPI_Comm_free(&small_comm);
             if (big_comm != MPI_COMM_NULL)
                 MPI_Comm_free(&big_comm);
+            free(Recv_set);
 
             return result;
         }
         else
         {
-            // printf("Rank %d: IN GLOBAL_SORT Finished with new local list: [", rank);
-            // for (int i = 0; i < new_list_size; i++)
-            // {
-            //     printf("%d, ", (*elements)[i]);
-            // }
-            // printf("]\n");
             // Free communicators after recursion
             if (small_comm != MPI_COMM_NULL)
                 MPI_Comm_free(&small_comm);
             if (big_comm != MPI_COMM_NULL)
                 MPI_Comm_free(&big_comm);
-
+            free(Recv_set);
             return new_list_size;
         }
     }
@@ -385,26 +339,12 @@ int main(int argc, char **argv)
     double start = MPI_Wtime();
     int *my_elements = NULL;
     int my_count = distribute_from_root(elements, num_elements, &my_elements);
-    // printf("Rank %d: My count: %d\n", rank, my_count);
-    // print elements
-    // printf("Rank %d: My elements: ", rank);
-    // for (int i = 0; i < my_count; i++)
-    // {
-    //     printf("%d ", (my_elements)[i]);
-    // }
-    // printf("\n");
 
     qsort(my_elements, my_count, sizeof(int), compare);
 
-    int new_count = global_sort(&my_elements, my_count, MPI_COMM_WORLD, pivotStrategy, 0);
-
+       int new_count = global_sort(&my_elements, my_count, MPI_COMM_WORLD, pivotStrategy, 0);
     MPI_Barrier(MPI_COMM_WORLD);
-    // printf("Rank %d: IN MAIN Finished with new local list: [", rank);
-    // for (int i = 0; i < new_count; i++)
-    // {
-    //     printf("%d, ", (my_elements)[i]);
-    // }
-    // printf("]\n");
+
     gather_on_root(elements, my_elements, new_count);
 
     MPI_Barrier(MPI_COMM_WORLD);
@@ -413,8 +353,7 @@ int main(int argc, char **argv)
     if (rank == 0)
     {
         printf("Execution time: %f\n", execution_time);
-        //printf("Printing results to file %s\n", outputFile);
-        //check_and_print(elements, num_elements, outputFile);
+        check_and_print(elements, num_elements, outputFile);
     }
 
     free(my_elements);

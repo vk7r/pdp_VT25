@@ -14,6 +14,10 @@ int get_median(int *elements, int n)
     // If even, return the average of the two middle elements
     // if odd, return the middle element
 
+    if (n <= 0 || elements == NULL)
+    {
+        return 0; // Or some other default value that makes sense for your application
+    }
 
     if (n % 2 == 0)
     {

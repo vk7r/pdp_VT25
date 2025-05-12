@@ -136,10 +136,10 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
     int larger_index = select_pivot(pivot_strategy, *elements, n, communicator);
     int size_set_small = larger_index;
     int size_set_large = n - larger_index;
-    int set_small[size_set_small];
-    int set_large[size_set_large];
-    // int *set_small = malloc(size_set_small * sizeof(int));
-    // int *set_large = malloc(size_set_large * sizeof(int));
+    // int set_small[size_set_small];
+    // int set_large[size_set_large];
+    int *set_small = malloc(size_set_small * sizeof(int));
+    int *set_large = malloc(size_set_large * sizeof(int));
 
     int size, rank;
     MPI_Group world_group;
@@ -228,6 +228,8 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
             if (big_comm != MPI_COMM_NULL)
                 MPI_Comm_free(&big_comm);
             free(Recv_set);
+            free(set_small);
+            free(set_large);
             return result;
         }
         else
@@ -238,6 +240,7 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
             if (big_comm != MPI_COMM_NULL)
                 MPI_Comm_free(&big_comm);
             free(Recv_set);
+            //
             return new_list_size;
         }
     }
@@ -274,6 +277,8 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
             if (big_comm != MPI_COMM_NULL)
                 MPI_Comm_free(&big_comm);
             free(Recv_set);
+            free(set_small);
+            free(set_large);
 
             return result;
         }
@@ -285,6 +290,8 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
             if (big_comm != MPI_COMM_NULL)
                 MPI_Comm_free(&big_comm);
             free(Recv_set);
+            free(set_small);
+            free(set_large);
             return new_list_size;
         }
     }
@@ -342,7 +349,7 @@ int main(int argc, char **argv)
 
     qsort(my_elements, my_count, sizeof(int), compare);
 
-       int new_count = global_sort(&my_elements, my_count, MPI_COMM_WORLD, pivotStrategy, 0);
+    int new_count = global_sort(&my_elements, my_count, MPI_COMM_WORLD, pivotStrategy, 0);
     MPI_Barrier(MPI_COMM_WORLD);
 
     gather_on_root(elements, my_elements, new_count);
@@ -353,7 +360,7 @@ int main(int argc, char **argv)
     if (rank == 0)
     {
         printf("Execution time: %f\n", execution_time);
-        check_and_print(elements, num_elements, outputFile);
+        // check_and_print(elements, num_elements, outputFile);
     }
 
     free(my_elements);

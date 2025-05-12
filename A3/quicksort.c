@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "pivot.h"
 #include "quicksort.h"
+#include <string.h>
 
 int read_input(char *file_name, int **elements)
 {
@@ -77,12 +78,48 @@ int distribute_from_root(int *all_elements, int n, int **my_elements)
     }
 
     int my_count = send_counts[rank];
-    *my_elements = malloc(my_count * sizeof(int));
+    *my_elements = malloc(n * sizeof(int));
+    // printf("Before scatterv\n\n");
     MPI_Scatterv(all_elements, send_counts, block_starts, MPI_INT,
                  *my_elements, my_count, MPI_INT,
                  0, MPI_COMM_WORLD);
     return my_count;
 }
+
+// int distribute_from_root(int *all_elements, int n, int **my_elements)
+// {
+//     int rank, size;
+//     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+//     MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+//     int remainder = n % size;
+//     int chunk_size = (n - remainder) / size;
+
+//     if (rank == 0)
+//     {
+//         Need to handle the case where n is not divisible by size
+//         Root node keeps the remainder, everyone else gets chunk_size
+//         *my_elements = malloc((chunk_size + remainder) * sizeof(int));
+//         printf("BEFORE SCATTER ROOT\n");
+//         MPI_Scatter(all_elements + remainder, chunk_size, MPI_INT, my_elements, chunk_size,
+//                     MPI_INT, 0, MPI_COMM_WORLD);
+//         printf("AFTER SCATTER ROOT\n");
+//         chunk_size = chunk_size + remainder;
+//         Handwavy, pointer at the start of the array will be moved by remainder so we need to move it back
+//         memcpy(my_elements, all_elements, chunk_size * sizeof(int));
+//     }
+//     else
+//     {
+//         *my_elements = malloc(chunk_size * sizeof(int));
+//         printf("BEFORE SCATTER NOT ROOT\n");
+//         MPI_Scatter(NULL, chunk_size, MPI_INT, *my_elements, chunk_size, MPI_INT, 0,
+//                     MPI_COMM_WORLD);
+//         printf("AFter SCATTER NOT ROOT\n");
+//     }
+//     printf("My chunk size: %d, rank %d\n", chunk_size, rank);
+
+//     return chunk_size;
+// }
 
 void merge_ascending(int *v1, int n1, int *v2, int n2, int *result)
 {
@@ -330,40 +367,54 @@ int main(int argc, char **argv)
         }
     }
 
+    if (num_proc == 1)
+    {
+        double start = MPI_Wtime();
+        qsort(elements, num_elements, sizeof(int), compare);
+        double execution_time = MPI_Wtime() - start;
+        printf("Execution time: %f\n", execution_time);
+        free(elements);
+        MPI_Finalize();
+        return 0;
+    }
+
     // Broadcast the number of elements to all processes
     MPI_Bcast(&num_elements, 1, MPI_INT, 0, MPI_COMM_WORLD);
-
+    MPI_Barrier(MPI_COMM_WORLD);
+    // Start timer
+    double start = MPI_Wtime();
     int *my_elements = NULL;
     int my_count = distribute_from_root(elements, num_elements, &my_elements);
+    // printf("Rank %d: My count: %d\n", rank, my_count);
+    // print elements
+    // printf("Rank %d: My elements: ", rank);
+    // for (int i = 0; i < my_count; i++)
+    // {
+    //     printf("%d ", (my_elements)[i]);
+    // }
+    // printf("\n");
 
     qsort(my_elements, my_count, sizeof(int), compare);
 
     int new_count = global_sort(&my_elements, my_count, MPI_COMM_WORLD, pivotStrategy, 0);
 
     MPI_Barrier(MPI_COMM_WORLD);
-    printf("Rank %d: IN MAIN Finished with new local list: [", rank);
-    for (int i = 0; i < new_count; i++)
-    {
-        printf("%d, ", (my_elements)[i]);
-    }
-    printf("]\n");
+    // printf("Rank %d: IN MAIN Finished with new local list: [", rank);
+    // for (int i = 0; i < new_count; i++)
+    // {
+    //     printf("%d, ", (my_elements)[i]);
+    // }
+    // printf("]\n");
     gather_on_root(elements, my_elements, new_count);
 
     MPI_Barrier(MPI_COMM_WORLD);
-    if (rank == 0)
-    {
-        printf("Rank %d: Finished list: [", rank);
-        for (int i = 0; i < num_elements; i++)
-        {
-            printf("%d, ", (elements)[i]);
-        }
-        printf("]\n");
-    }
+    double execution_time = MPI_Wtime() - start;
 
     if (rank == 0)
     {
-        printf("Printing results to file %s\n", outputFile);
-        check_and_print(elements, num_elements, outputFile);
+        printf("Execution time: %f\n", execution_time);
+        //printf("Printing results to file %s\n", outputFile);
+        //check_and_print(elements, num_elements, outputFile);
     }
 
     free(my_elements);
@@ -371,7 +422,6 @@ int main(int argc, char **argv)
     {
         free(elements);
     }
-
     MPI_Finalize();
     return 0;
 }

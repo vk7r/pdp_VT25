@@ -240,6 +240,8 @@ int global_sort(int **elements, int n, MPI_Comm communicator, int pivot_strategy
             if (big_comm != MPI_COMM_NULL)
                 MPI_Comm_free(&big_comm);
             free(Recv_set);
+            free(set_small);
+            free(set_large);
             //
             return new_list_size;
         }

@@ -93,16 +93,10 @@ int select_pivot_median_root(int *elements, int n, MPI_Comm communicator)
     {
         pivot = get_median(elements, n);
     }
-    // Broadcast the pivot to all processes
+
     MPI_Bcast(&pivot, 1, MPI_INT, 0, communicator);
-    // MPI_Barrier(communicator);
 
     index = get_larger_index(elements, n, pivot);
-
-    // if (rank == 0)
-    // {
-    //     printf("Pivot: %d\n", pivot);
-    // }
 
     return index;
 }

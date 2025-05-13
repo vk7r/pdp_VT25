@@ -335,7 +335,8 @@ int main(int argc, char **argv)
         double start = MPI_Wtime();
         qsort(elements, num_elements, sizeof(int), compare);
         double execution_time = MPI_Wtime() - start;
-        printf("Execution time: %f\n", execution_time);
+        printf("%f", execution_time);
+        check_and_print(elements, num_elements, outputFile);
         free(elements);
         MPI_Finalize();
         return 0;
@@ -361,8 +362,8 @@ int main(int argc, char **argv)
 
     if (rank == 0)
     {
-        printf("Execution time: %f\n", execution_time);
-        // check_and_print(elements, num_elements, outputFile);
+        printf("%f %d %d", execution_time, num_proc, pivotStrategy);
+        check_and_print(elements, num_elements, outputFile);
     }
 
     free(my_elements);

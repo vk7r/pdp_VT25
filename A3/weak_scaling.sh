@@ -3,7 +3,7 @@
 #SBATCH -N 1
 #SBATCH -n 16
 #SBATCH -c 1
-#SBATCH -t 00:10:00
+#SBATCH -t 01:00:00
 #SBATCH --error=jobs/job.%j.err
 #SBATCH --output=job.%j.out
 
